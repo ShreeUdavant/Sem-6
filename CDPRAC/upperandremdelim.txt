@@ -1,0 +1,20 @@
+%{
+#include<stdio.h>
+FILE* outfile;
+extern FILE* yyin;
+%}
+
+[A-Za-z] {fprintf(yyout, "%c", yytext[0]-32);}
+[;'. \n:] ;
+. {fprintf(yyout, "%c",yytext[0]);}
+
+int yywrap()
+{
+return 1;
+}
+
+main(int argc, char* argv[])
+{
+yyout = fopen("output.txt","w");
+yyin = fopen("input.txt"
+}
