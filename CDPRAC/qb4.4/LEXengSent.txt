@@ -1,0 +1,14 @@
+%{
+#include "y.tab.h"
+%}
+
+%%
+
+"The"|"the"|"a"|"A"|"an"|"AN" return ARTICLE;
+"monkey"|"banana"|"rabbit"|"carrot" return NOUN;
+"hit"|"ate"|"teased" return VERB;
+"\n" return end;
+[ \t]
+. return yytext[0];
+
+%%

@@ -1,0 +1,36 @@
+%{
+    void yyerror(char *s);
+    int yylex();
+    #include <stdio.h>
+%}
+
+%start sentence
+%token NOUN ARTICLE VERB
+%token end
+
+%%
+
+sentence : nounPhrase verbPhrase end {printf("Correct formation of a English sentence.\n");
+                                       yyparse(); 
+                                    }
+;
+
+nounPhrase : ARTICLE NOUN {}
+;
+
+verbPhrase : VERB nounPhrase {}
+;
+
+%%
+
+int main(){
+    return yyparse();
+}
+
+void yyerror(char *s){
+    printf("Error : %s\n",s);
+}
+
+int yywrap(){
+    return 1;
+}
