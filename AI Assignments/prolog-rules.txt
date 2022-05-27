@@ -1,0 +1,22 @@
+/* Rules */
+mother_of(Mother,Child):-female(Mother),parent_of(Mother,Child).
+
+father_of(Father,Child):-male(Father),parent_of(Father,Child).
+
+son_of(Parent,Child):-male(Child),parent_of(Parent,Child).
+
+daughter_of(Parent,Child):-female(Child),parent_of(Parent,Child).
+
+siblings(Sibling1,Sibling2):-parent_of(Parent,Sibling1),parent_of(Parent,Sibling2),Sibling1\=Sibling2.
+
+aunt(Aunt,Niece_or_Nephew):-female(Aunt),siblings(Aunt,Parent),parent_of(Parent,Niece_or_Nephew).
+
+uncle(Uncle,Niece_or_Nephew):-male(Uncle),siblings(Uncle,Parent),parent_of(Parent,Niece_or_Nephew).
+
+brother_in_law(Z,Y):-married(X,Z),brothers(X,Y).
+
+sister_in_law(Z,Y):-married(X,Z),sisters(X,Y).
+
+grandfather(X,Y):-male(X),parent_of(Z,Y),parent_of(X,Z).
+
+grandmother(X,Y):-female(X),parent_of(Z,Y),parent_of(X,Z).
