@@ -1,0 +1,81 @@
+male(donald).
+male(regan).
+male(john).
+male(newton).
+male(regan).
+male(harry).
+male(william).
+
+female(aniya).
+female(roshi).
+female(andriya).
+female(melania).
+female(aniya).
+
+parent_of(donald,melania).
+parent_of(aniya,melania).
+parent_of(donald,andriya).
+parent_of(aniya,andriya).
+
+parent_of(regan,newton).
+parent_of(roshi,newton).
+
+parent_of(john,harry).
+parent_of(melania,harry).
+
+parent_of(newton,william).
+parent_of(andriya,william).
+
+%to check if father
+father_of(X,Y):- male(X),parent_of(X,Y).
+%to check if mother
+mother_of(X,Y):- female(X),parent_of(X,Y).
+%to check if grandfather
+grandfather_of(X,Y):-parent_of(Z,Y),father_of(X,Z),male(X).
+%to check for grandmother
+grandmother_of(X,Y):-parent_of(Z,Y),mother_of(X,Z),female(X).
+
+%check for sister
+sister_of(X,Y):-father_of(F,X),father_of(F,Y),mother_of(M,X),mother_of(M,Y),not(F=M),female(X).
+
+%check for brother
+brother_of(X,Y):-father_of(F,X),father_of(F,Y),mother_of(M,X),mother_of(M,Y),not(F=M),male(X).
+
+%check for aunt universal
+aunt_of(X,Y):-parent_of(Z,Y),sister_of(X,Z).
+%check for uncle universal
+uncle_of(X,Y):-parent_of(Z,Y),brother_of(X,Z).
+
+%aunt maternal
+aunt_ofm(X,Y):- mother_of(Z,Y), sister_of(X,Z).
+%uncle maternal
+uncle_ofm(X,Y):- mother_of(Z,Y), brother_of(X,Z).
+
+%aunt paternal
+aunt_ofp(X,Y):- father_of(Z,Y), sister_of(X,Z).
+%uncle paternal
+uncle_ofp(X,Y):- father_of(Z,Y), brother_of(X,Z).
+
+%grandparents
+grandparent_of(X,Y):-grandfather_of(X,Y).
+grandparent_of(X,Y):-grandmother_of(X,Y).
+
+%grandchildren
+grandchildren_of(X,Y):-grandparent_of(Y,X).
+
+%husband
+husband(X,Y):- parent_of(X,Z),parent_of(Y,Z), female(Y),male(X).
+
+%wife
+wife(X,Y):-parent_of(X,Z),parent_of(Y,Z),female(X),male(Y).
+
+%sister in law husband's side
+sister_in_lawh(X,Y):- female(X), mother_of(Y,Z),father_of(A,Z), wife(Y,A), sister_of(X,A), female(Y).
+%sister_in_law wife's side
+sister_in_laww(X,Y):- female(X), father_of(Y,Z), mother_of(A,Z), husband(Y,A), sister_of(X,A),male(Y).
+
+%brother in law husband's side
+brother_in_lawh(X,Y):- male(X), mother_of(Y,Z),father_of(A,Z), husband(A,Y), brother_of(X,A), female(Y).
+
+%brother in law wife's side
+brother_in_laww(X,Y):- male(X), mother_of(A,Z),father_of(Y,Z), wife(A,Y), brother_of(X,A), male(Y).
